@@ -10,7 +10,11 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        platform: [windows-latest]
+        include:
+          - platform: windows-latest
+            os: windows
+          - platform: macos-latest
+            os: macos
 
     runs-on: ${{ matrix.platform }}
     permissions:
@@ -33,11 +37,20 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: Download yt-dlp sidecar
+      - name: Download yt-dlp sidecar (Windows)
+        if: matrix.os == 'windows'
         shell: pwsh
         run: |
           mkdir -Force src-tauri/binaries
           Invoke-WebRequest -Uri "https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp.exe" -OutFile "src-tauri/binaries/yt-dlp-x86_64-pc-windows-msvc.exe"
+
+      - name: Download yt-dlp sidecar (macOS)
+        if: matrix.os == 'macos'
+        run: |
+          mkdir -p src-tauri/binaries
+          curl -L "https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp_macos" -o "src-tauri/binaries/yt-dlp-x86_64-apple-darwin"
+          curl -L "https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp_macos" -o "src-tauri/binaries/yt-dlp-aarch64-apple-darwin"
+          chmod +x src-tauri/binaries/yt-dlp-*
 
       - name: Build & Publish Release
         uses: tauri-apps/tauri-action@v0
@@ -46,6 +59,6 @@ jobs:
         with:
           tagName: ${{ github.ref_name }}
           releaseName: 'LiveCrate v__VERSION__'
-          releaseBody: 'Nouveau build de LiveCrate ! Téléchargez le fichier .msi ci-dessous pour installer.'
+          releaseBody: 'Nouveau build de LiveCrate ! (Windows: .msi | Mac: .dmg)'
           releaseDraft: false
           prerelease: false
