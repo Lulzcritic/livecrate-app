@@ -19,8 +19,7 @@ pub async fn separate_stems(
     deck_id: String,
     state: State<'_, AppState>,
 ) -> Result<String, String> {
-    // Force CUDA and enable debug logging so we get clear feedback if GPU fails
-    std::env::set_var("STEMMER_EP_FORCE", "cuda");
+    // Enable debug logging so we get clear feedback
     std::env::set_var("DEBUG_STEMS", "1");
 
     log::info!("Starting stem separation for deck {}", deck_id);
