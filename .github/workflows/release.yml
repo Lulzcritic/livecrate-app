@@ -15,6 +15,8 @@ jobs:
             os: windows
           - platform: macos-latest
             os: macos
+          - platform: ubuntu-22.04
+            os: linux
 
     runs-on: ${{ matrix.platform }}
     permissions:
@@ -37,6 +39,13 @@ jobs:
       - name: Install dependencies
         run: npm install
 
+      - name: Install system dependencies (Linux)
+        if: matrix.os == 'linux'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libwebkit2gtk-4.1-dev libappindicator3-dev librsvg2-dev patchelf
+
+
       - name: Download yt-dlp sidecar (Windows)
         if: matrix.os == 'windows'
         shell: pwsh
@@ -52,6 +61,13 @@ jobs:
           curl -L "https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp_macos" -o "src-tauri/binaries/yt-dlp-aarch64-apple-darwin"
           chmod +x src-tauri/binaries/yt-dlp-*
 
+      - name: Download yt-dlp sidecar (Linux)
+        if: matrix.os == 'linux'
+        run: |
+          mkdir -p src-tauri/binaries
+          curl -L "https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp_linux" -o "src-tauri/binaries/yt-dlp-x86_64-unknown-linux-gnu"
+          chmod +x src-tauri/binaries/yt-dlp-*
+
       - name: Build & Publish Release
         uses: tauri-apps/tauri-action@v0
         env:
@@ -59,6 +75,6 @@ jobs:
         with:
           tagName: ${{ github.ref_name }}
           releaseName: 'LiveCrate v__VERSION__'
-          releaseBody: 'Nouveau build de LiveCrate ! (Windows: .msi | Mac: .dmg)'
+          releaseBody: 'Nouveau build de LiveCrate ! (Windows: .msi | Mac: .dmg | Linux: .AppImage, .deb)'
           releaseDraft: false
           prerelease: false
