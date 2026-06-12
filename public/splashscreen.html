@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Starting LiveCrate...</title>
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        width: 100vw;
+        height: 100vh;
+        background-color: transparent;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        overflow: hidden;
+        -webkit-app-region: drag; /* allows dragging window by the splashscreen */
+      }
+      
+      .splash-container {
+        width: 250px;
+        height: 250px;
+        background-color: transparent;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        /* Removed border and box-shadow for seamless fade to transparent */
+      }
+
+      .logo {
+        width: 128px;
+        height: 128px;
+        animation: pulse 2s infinite ease-in-out;
+      }
+      
+      .loader {
+        margin-top: 20px;
+        width: 100px;
+        height: 2px;
+        background-color: #222222;
+        position: relative;
+        overflow: hidden;
+      }
+      
+      .loader::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 40px;
+        height: 100%;
+        background-color: #00E5B5;
+        animation: slide 1.5s infinite ease-in-out;
+      }
+
+      @keyframes pulse {
+        0% { transform: scale(0.95); opacity: 0.8; }
+        50% { transform: scale(1.05); opacity: 1; }
+        100% { transform: scale(0.95); opacity: 0.8; }
+      }
+
+      @keyframes slide {
+        0% { transform: translateX(-40px); }
+        100% { transform: translateX(100px); }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="splash-container">
+      <img src="/icon.png" alt="LiveCrate" class="logo" />
+      <div class="loader"></div>
+    </div>
+  </body>
+</html>

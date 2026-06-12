@@ -1,0 +1,33 @@
+{
+  "name": "livecrate",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview",
+    "tauri": "tauri",
+    "release": "npm version patch && git push origin HEAD && git push origin --tags"
+  },
+  "dependencies": {
+    "@tauri-apps/api": "^2.1.1",
+    "lucide-react": "^0.378.0",
+    "meyda": "^5.6.3",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "web-audio-beat-detector": "^8.2.36"
+  },
+  "devDependencies": {
+    "@tailwindcss/vite": "^4.0.0",
+    "@tauri-apps/cli": "^2.1.0",
+    "@types/react": "^18.2.66",
+    "@types/react-dom": "^18.2.22",
+    "@vitejs/plugin-react": "^4.2.1",
+    "autoprefixer": "^10.4.19",
+    "postcss": "^8.4.38",
+    "tailwindcss": "^4.0.0",
+    "typescript": "^5.2.2",
+    "vite": "^5.2.0"
+  }
+}
